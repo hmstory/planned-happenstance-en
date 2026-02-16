@@ -1,82 +1,59 @@
-// api/analyze.js
 import Anthropic from '@anthropic-ai/sdk';
 
 export default async function handler(req, res) {
-      // CORS headers
+    if (!process.env.ANTHROPIC_API_KEY) {
+        console.error('ANTHROPIC_API_KEY is not set');
+        return res.status(500).json({ error: 'API key not configured' });
+    }
+
+    const anthropic = new Anthropic({
+        apiKey: process.env.ANTHROPIC_API_KEY,
+    });
+
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
 
     if (req.method === 'OPTIONS') {
-              return res.status(200).end();
+        res.status(200).end();
+        return;
     }
 
     if (req.method !== 'POST') {
-              return res.status(405).json({ error: 'Method not allowed' });
+        return res.status(405).json({ error: 'Method not allowed' });
     }
 
     try {
-              const { userName, events } = req.body;
+        const { events, requestStructuredData } = req.body;
 
-          if (!events || events.length === 0) {
-                        return res.status(400).json({ error: 'No events provided' });
-          }
+        if (!events || !Array.isArray(events)) {
+            return res.status(400).json({ error: 'Invalid events data' });
+        }
 
-          const client = new Anthropic({
-                        apiKey: process.env.ANTHROPIC_API_KEY
-          });
+        const eventsText = events.map((event, index) => `\nEvent ${index + 1}:\n- Period: ${event.period}\n- Title: ${event.title}\n- Chance Event: ${event.situation}\n- My Action: ${event.action}\n`).join('\n');
 
-          const prompt = `You are an expert on John Krumboltz's Planned Happenstance theory.
+        let systemPrompt = `You are an expert in John Krumboltz's Planned Happenstance Theory. Analyze the user's career events and explain how the following 5 skills were manifested:\n1. Curiosity\n2. Persistence\n3. Flexibility\n4. Optimism\n5. Risk-taking`;
 
-          Analyze the following life events for ${userName} and identify which of the 5 Planned Happenstance skills are demonstrated in each event:
-          - 🔍 Curiosity: Exploring new learning opportunities
-          - 💪 Persistence: Continuing despite setbacks
-          - 🔄 Flexibility: Changing circumstances and attitudes
-          - ☀️ Optimism: Viewing new opportunities as achievable
-          - 🎯 Risk-taking: Taking action despite uncertainty
+        let userPrompt = `Please analyze the following 4 events:\n\n${eventsText}\n\n`;
 
-          Events:
-          ${events.map((e, i) => `${i + 1}. [${e.age}] ${e.title}: ${e.description}`).join('\\n')}
+        userPrompt += `Analyze which skills were manifested in each event.\n\nAnalysis format:\n## Event 1: [Title]\n### Key Analysis\n**Curiosity** ★★★★★\n- Specific evidence 1\n- Specific evidence 2\n\n**Risk-taking** ★★★\n- Specific evidence\n\n---\n\nImportant: Analyze in a way that helps the user realize "I unknowingly used these skills to turn chance into opportunity."`;
 
-          Respond in this exact JSON format:
-          {
-              "events": [
-                      {
-                                  "age": "the age/period",
-                                              "title": "the title",
-                                                          "description": "brief summary",
-                                                                      "skills": ["🔍 Curiosity", "🎯 Risk-taking"]
-                                                                              }
-                                                                                  ],
-                                                                                      "pattern": "A 2-3 sentence analysis of ${userName}'s dominant happenstance pattern",
-                                                                                          "message": "An encouraging message that Krumboltz might give to ${userName} based on their story"
-                                                                                          }
+        const message = await anthropic.messages.create({
+            model: 'claude-haiku-4-5-20251001',
+            max_tokens: 4000,
+            system: systemPrompt,
+            messages: [
+                {
+                    role: 'user',
+                    content: userPrompt
+                }
+            ]
+        });
 
-                                                                                          Only respond with valid JSON, no additional text.`;
-
-          const response = await client.messages.create({
-                        model: 'claude-haiku-4-5-20251001',
-                        max_tokens: 1024,
-                        messages: [{ role: 'user', content: prompt }]
-          });
-
-          const content = response.content[0].text;
-
-          // Parse JSON from response
-          const jsonMatch = content.match(/\{[\s\S]*\}/);
-              if (!jsonMatch) {
-                            throw new Error('Invalid response format');
-              }
-
-          const analysis = JSON.parse(jsonMatch[0]);
-
-          return res.status(200).json(analysis);
-
+        res.status(200).json(message);
     } catch (error) {
-              console.error('Analysis error:', error);
-              return res.status(500).json({
-                            error: 'Analysis failed',
-                            message: error.message
-              });
+        console.error('API Error:', error);
+        res.status(500).json({ error: 'Analysis failed', details: error.message });
     }
 }
