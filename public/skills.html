@@ -9,133 +9,261 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-gray-100 min-h-screen">
+    <!-- Header with Language Switcher -->
     <header class="border-b border-slate-800 sticky top-0 z-50 bg-slate-900/95 backdrop-blur">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <div>
                 <h1 class="text-2xl sm:text-3xl font-bold text-cyan-400">Planned Happenstance</h1>
                 <p class="text-gray-400 text-sm mt-1">Skills manifested in Krumboltz's events</p>
             </div>
-            <a href="https://planned-happenstance.vercel.app/skill_analysis.html" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-gray-300 hover:bg-slate-700 hover:text-cyan-400 transition">
+            <a href="https://planned-happenstance.vercel.app/skill_analysis.html" 
+               class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-gray-300 hover:bg-slate-700 hover:text-cyan-400 transition">
                 <span>한국어</span>
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
             </a>
         </div>
     </header>
+
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Page Title -->
         <div class="text-center mb-12">
             <h2 class="text-4xl sm:text-5xl font-bold text-white mb-4">5 Planned Happenstance Skills</h2>
             <p class="text-gray-400 text-lg max-w-2xl mx-auto">Analyzed through Krumboltz's life events</p>
         </div>
+
+        <!-- Skills Overview Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-16">
-            <div class="bg-slate-800 rounded-lg p-6 text-center hover:bg-slate-700 transition border border-slate-700"><div class="text-4xl mb-3">🧠</div><h3 class="text-cyan-400 font-semibold text-lg">Curiosity</h3></div>
-            <div class="bg-slate-800 rounded-lg p-6 text-center hover:bg-slate-700 transition border border-slate-700"><div class="text-4xl mb-3">💪</div><h3 class="text-cyan-400 font-semibold text-lg">Persistence</h3></div>
-            <div class="bg-slate-800 rounded-lg p-6 text-center hover:bg-slate-700 transition border border-slate-700"><div class="text-4xl mb-3">🔄</div><h3 class="text-cyan-400 font-semibold text-lg">Flexibility</h3></div>
-            <div class="bg-slate-800 rounded-lg p-6 text-center hover:bg-slate-700 transition border border-slate-700"><div class="text-4xl mb-3">☀️</div><h3 class="text-cyan-400 font-semibold text-lg">Optimism</h3></div>
-            <div class="bg-slate-800 rounded-lg p-6 text-center hover:bg-slate-700 transition border border-slate-700"><div class="text-4xl mb-3">🎯</div><h3 class="text-cyan-400 font-semibold text-lg">Risk-taking</h3></div>
+            <div class="bg-slate-800 rounded-lg p-6 text-center hover:bg-slate-700 transition border border-slate-700">
+                <div class="text-4xl mb-3">🧠</div>
+                <h3 class="text-cyan-400 font-semibold text-lg">Curiosity</h3>
+            </div>
+            <div class="bg-slate-800 rounded-lg p-6 text-center hover:bg-slate-700 transition border border-slate-700">
+                <div class="text-4xl mb-3">💪</div>
+                <h3 class="text-cyan-400 font-semibold text-lg">Persistence</h3>
+            </div>
+            <div class="bg-slate-800 rounded-lg p-6 text-center hover:bg-slate-700 transition border border-slate-700">
+                <div class="text-4xl mb-3">🔄</div>
+                <h3 class="text-cyan-400 font-semibold text-lg">Flexibility</h3>
+            </div>
+            <div class="bg-slate-800 rounded-lg p-6 text-center hover:bg-slate-700 transition border border-slate-700">
+                <div class="text-4xl mb-3">☀️</div>
+                <h3 class="text-cyan-400 font-semibold text-lg">Optimism</h3>
+            </div>
+            <div class="bg-slate-800 rounded-lg p-6 text-center hover:bg-slate-700 transition border border-slate-700">
+                <div class="text-4xl mb-3">🎯</div>
+                <h3 class="text-cyan-400 font-semibold text-lg">Risk-taking</h3>
+            </div>
         </div>
+
+        <!-- Detailed Skill Sections -->
         <div class="space-y-12">
+            <!-- Skill 1: Curiosity -->
             <section class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-                <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 p-6"><div class="flex items-center gap-4"><div class="text-5xl">🧠</div><div><h3 class="text-2xl font-bold text-white">Curiosity</h3><p class="text-cyan-100 mt-1">An attitude of exploring and seeking new learning opportunities</p></div></div></div>
+                <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 p-6">
+                    <div class="flex items-center gap-4">
+                        <div class="text-5xl">🧠</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Curiosity</h3>
+                            <p class="text-cyan-100 mt-1">An attitude of exploring and seeking new learning opportunities</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="p-8 space-y-6">
+                    <!-- Event 1 -->
                     <div class="bg-slate-700/50 rounded-lg p-6 border-l-4 border-cyan-400">
                         <h4 class="font-semibold text-cyan-300 mb-2">Event 1: The Start of Tennis</h4>
                         <p class="text-gray-300 mb-4">A friend brought out a birthday tennis racket. "What's this?" Curiosity about a sport he'd never seen sparked exploration.</p>
-                        <div class="bg-slate-700 rounded p-4 text-gray-200"><p class="text-sm font-medium text-cyan-400 mb-2">💡 Manifestation:</p><p class="text-gray-300">He tried the racket on the street, and this curiosity led him to find a proper court and eventually become a varsity tennis player.</p></div>
+                        <div class="bg-slate-700 rounded p-4 text-gray-200">
+                            <p class="text-sm font-medium text-cyan-400 mb-2">💡 Manifestation:</p>
+                            <p class="text-gray-300">He tried the racket on the street, and this curiosity led him to find a proper court and eventually become a varsity tennis player.</p>
+                        </div>
                     </div>
+                    <!-- Event 4 -->
                     <div class="bg-slate-700/50 rounded-lg p-6 border-l-4 border-cyan-400">
                         <h4 class="font-semibold text-cyan-300 mb-2">Event 4: Becoming a Counselor by Standing in Line</h4>
                         <p class="text-gray-300 mb-4">He went for Educational Psychology but ended up in the Counseling line. "I don't know what counseling is, but it'd be nice to counsel myself and figure out what I want to be."</p>
-                        <div class="bg-slate-700 rounded p-4 text-gray-200"><p class="text-sm font-medium text-cyan-400 mb-2">💡 Manifestation:</p><p class="text-gray-300">Curiosity about an unexpected option made him explore counseling despite not understanding it initially.</p></div>
+                        <div class="bg-slate-700 rounded p-4 text-gray-200">
+                            <p class="text-sm font-medium text-cyan-400 mb-2">💡 Manifestation:</p>
+                            <p class="text-gray-300">Curiosity about an unexpected option made him explore counseling despite not understanding it initially.</p>
+                        </div>
                     </div>
                 </div>
             </section>
+
+            <!-- Skill 2: Persistence -->
             <section class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-                <div class="bg-gradient-to-r from-purple-600 to-purple-500 p-6"><div class="flex items-center gap-4"><div class="text-5xl">💪</div><div><h3 class="text-2xl font-bold text-white">Persistence</h3><p class="text-purple-100 mt-1">The ability to keep making effort despite obstacles</p></div></div></div>
+                <div class="bg-gradient-to-r from-purple-600 to-purple-500 p-6">
+                    <div class="flex items-center gap-4">
+                        <div class="text-5xl">💪</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Persistence</h3>
+                            <p class="text-purple-100 mt-1">The ability to keep making effort despite obstacles</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="p-8 space-y-6">
+                    <!-- Event 1 -->
                     <div class="bg-slate-700/50 rounded-lg p-6 border-l-4 border-purple-400">
                         <h4 class="font-semibold text-purple-300 mb-2">Event 1: The Start of Tennis</h4>
                         <p class="text-gray-300 mb-4">He started playing tennis on the street like ping pong, then kept practicing despite it being unconventional.</p>
-                        <div class="bg-slate-700 rounded p-4 text-gray-200"><p class="text-sm font-medium text-purple-400 mb-2">💡 Manifestation:</p><p class="text-gray-300">Through continuous practice, he became a varsity tennis player, showing that persistence transformed a casual street game into serious athletic achievement.</p></div>
+                        <div class="bg-slate-700 rounded p-4 text-gray-200">
+                            <p class="text-sm font-medium text-purple-400 mb-2">💡 Manifestation:</p>
+                            <p class="text-gray-300">Through continuous practice, he became a varsity tennis player, showing that persistence transformed a casual street game into serious athletic achievement.</p>
+                        </div>
                     </div>
+                    <!-- Event 3 -->
                     <div class="bg-slate-700/50 rounded-lg p-6 border-l-4 border-purple-400">
                         <h4 class="font-semibold text-purple-300 mb-2">Event 3: Born in Iowa, Go to Columbia</h4>
                         <p class="text-gray-300 mb-4">A professor said "you probably won't get in" to Columbia, giving a pessimistic prediction about his application.</p>
-                        <div class="bg-slate-700 rounded p-4 text-gray-200"><p class="text-sm font-medium text-purple-400 mb-2">💡 Manifestation:</p><p class="text-gray-300">He completed the application process despite the negative prediction and was accepted, proving persistence overcomes obstacles and doubt.</p></div>
+                        <div class="bg-slate-700 rounded p-4 text-gray-200">
+                            <p class="text-sm font-medium text-purple-400 mb-2">💡 Manifestation:</p>
+                            <p class="text-gray-300">He completed the application process despite the negative prediction and was accepted, proving persistence overcomes obstacles and doubt.</p>
+                        </div>
                     </div>
                 </div>
             </section>
+
+            <!-- Skill 3: Flexibility -->
             <section class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-                <div class="bg-gradient-to-r from-emerald-600 to-emerald-500 p-6"><div class="flex items-center gap-4"><div class="text-5xl">🔄</div><div><h3 class="text-2xl font-bold text-white">Flexibility</h3><p class="text-emerald-100 mt-1">The ability to change attitudes and circumstances</p></div></div></div>
+                <div class="bg-gradient-to-r from-emerald-600 to-emerald-500 p-6">
+                    <div class="flex items-center gap-4">
+                        <div class="text-5xl">🔄</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Flexibility</h3>
+                            <p class="text-emerald-100 mt-1">The ability to change attitudes and circumstances</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="p-8 space-y-6">
+                    <!-- Event 2 -->
                     <div class="bg-slate-700/50 rounded-lg p-6 border-l-4 border-emerald-400">
                         <h4 class="font-semibold text-emerald-300 mb-2">Event 2: The Tennis Coach's Secret</h4>
                         <p class="text-gray-300 mb-4">He didn't know what to major in, and his coach said "psychology of course!"</p>
-                        <div class="bg-slate-700 rounded p-4 text-gray-200"><p class="text-sm font-medium text-emerald-400 mb-2">💡 Manifestation:</p><p class="text-gray-300">He open-mindedly accepted the suggestion and chose psychology as his major, showing flexibility in changing his direction based on trusted guidance.</p></div>
+                        <div class="bg-slate-700 rounded p-4 text-gray-200">
+                            <p class="text-sm font-medium text-emerald-400 mb-2">💡 Manifestation:</p>
+                            <p class="text-gray-300">He open-mindedly accepted the suggestion and chose psychology as his major, showing flexibility in changing his direction based on trusted guidance.</p>
+                        </div>
                     </div>
+                    <!-- Event 3 -->
                     <div class="bg-slate-700/50 rounded-lg p-6 border-l-4 border-emerald-400">
                         <h4 class="font-semibold text-emerald-300 mb-2">Event 3: Born in Iowa, Go to Columbia</h4>
                         <p class="text-gray-300 mb-4">He happened to learn about an Iowa-only fellowship that was unplanned.</p>
-                        <div class="bg-slate-700 rounded p-4 text-gray-200"><p class="text-sm font-medium text-emerald-400 mb-2">💡 Manifestation:</p><p class="text-gray-300">He flexibly converted this unplanned information into a new opportunity, adapting his circumstances to take advantage of unexpected resources.</p></div>
+                        <div class="bg-slate-700 rounded p-4 text-gray-200">
+                            <p class="text-sm font-medium text-emerald-400 mb-2">💡 Manifestation:</p>
+                            <p class="text-gray-300">He flexibly converted this unplanned information into a new opportunity, adapting his circumstances to take advantage of unexpected resources.</p>
+                        </div>
                     </div>
+                    <!-- Event 4 -->
                     <div class="bg-slate-700/50 rounded-lg p-6 border-l-4 border-emerald-400">
                         <h4 class="font-semibold text-emerald-300 mb-2">Event 4: Becoming a Counselor by Standing in Line</h4>
                         <p class="text-gray-300 mb-4">He went for Educational Psychology but ended up in the wrong line for Counseling.</p>
-                        <div class="bg-slate-700 rounded p-4 text-gray-200"><p class="text-sm font-medium text-emerald-400 mb-2">💡 Manifestation:</p><p class="text-gray-300">"This could work too" — he flexibly adjusted his attitude and chose counseling instead, demonstrating adaptability to unexpected circumstances.</p></div>
+                        <div class="bg-slate-700 rounded p-4 text-gray-200">
+                            <p class="text-sm font-medium text-emerald-400 mb-2">💡 Manifestation:</p>
+                            <p class="text-gray-300">"This could work too" — he flexibly adjusted his attitude and chose counseling instead, demonstrating adaptability to unexpected circumstances.</p>
+                        </div>
                     </div>
                 </div>
             </section>
+
+            <!-- Skill 4: Optimism -->
             <section class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-                <div class="bg-gradient-to-r from-yellow-600 to-yellow-500 p-6"><div class="flex items-center gap-4"><div class="text-5xl">☀️</div><div><h3 class="text-2xl font-bold text-white">Optimism</h3><p class="text-yellow-100 mt-1">An attitude of seeing new opportunities as possible</p></div></div></div>
+                <div class="bg-gradient-to-r from-yellow-600 to-yellow-500 p-6">
+                    <div class="flex items-center gap-4">
+                        <div class="text-5xl">☀️</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Optimism</h3>
+                            <p class="text-yellow-100 mt-1">An attitude of seeing new opportunities as possible</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="p-8 space-y-6">
+                    <!-- Event 2 -->
                     <div class="bg-slate-700/50 rounded-lg p-6 border-l-4 border-yellow-400">
                         <h4 class="font-semibold text-yellow-300 mb-2">Event 2: The Tennis Coach's Secret</h4>
                         <p class="text-gray-300 mb-4">He chose psychology as his major without really knowing what it was.</p>
-                        <div class="bg-slate-700 rounded p-4 text-gray-200"><p class="text-sm font-medium text-yellow-400 mb-2">💡 Manifestation:</p><p class="text-gray-300">"It'll probably be fine" — with optimism, he took classes and loved it. He even read psychology papers in the library, discovering a genuine passion through positive expectations.</p></div>
+                        <div class="bg-slate-700 rounded p-4 text-gray-200">
+                            <p class="text-sm font-medium text-yellow-400 mb-2">💡 Manifestation:</p>
+                            <p class="text-gray-300">"It'll probably be fine" — with optimism, he took classes and loved it. He even read psychology papers in the library, discovering a genuine passion through positive expectations.</p>
+                        </div>
                     </div>
+                    <!-- Event 4 -->
                     <div class="bg-slate-700/50 rounded-lg p-6 border-l-4 border-yellow-400">
                         <h4 class="font-semibold text-yellow-300 mb-2">Event 4: Becoming a Counselor by Standing in Line</h4>
                         <p class="text-gray-300 mb-4">He signed up for counseling without knowing what it was.</p>
-                        <div class="bg-slate-700 rounded p-4 text-gray-200"><p class="text-sm font-medium text-yellow-400 mb-2">💡 Manifestation:</p><p class="text-gray-300">He explored positive possibilities without prejudice toward an unknown field, showing optimism as the foundation for embracing unexpected career paths.</p></div>
+                        <div class="bg-slate-700 rounded p-4 text-gray-200">
+                            <p class="text-sm font-medium text-yellow-400 mb-2">💡 Manifestation:</p>
+                            <p class="text-gray-300">He explored positive possibilities without prejudice toward an unknown field, showing optimism as the foundation for embracing unexpected career paths.</p>
+                        </div>
                     </div>
                 </div>
             </section>
+
+            <!-- Skill 5: Risk-taking -->
             <section class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
-                <div class="bg-gradient-to-r from-red-600 to-red-500 p-6"><div class="flex items-center gap-4"><div class="text-5xl">🎯</div><div><h3 class="text-2xl font-bold text-white">Risk-taking</h3><p class="text-red-100 mt-1">The courage to act despite uncertain outcomes</p></div></div></div>
+                <div class="bg-gradient-to-r from-red-600 to-red-500 p-6">
+                    <div class="flex items-center gap-4">
+                        <div class="text-5xl">🎯</div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Risk-taking</h3>
+                            <p class="text-red-100 mt-1">The courage to act despite uncertain outcomes</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="p-8 space-y-6">
+                    <!-- Event 3 -->
                     <div class="bg-slate-700/50 rounded-lg p-6 border-l-4 border-red-400">
                         <h4 class="font-semibold text-red-300 mb-2">Event 3: Born in Iowa, Go to Columbia</h4>
                         <p class="text-gray-300 mb-4">A professor said "you probably won't get in" to Columbia.</p>
-                        <div class="bg-slate-700 rounded p-4 text-gray-200"><p class="text-sm font-medium text-red-400 mb-2">💡 Manifestation:</p><p class="text-gray-300">He applied knowing failure was possible and accepted it. Risk-taking was demonstrated by taking action despite the high probability of rejection.</p></div>
+                        <div class="bg-slate-700 rounded p-4 text-gray-200">
+                            <p class="text-sm font-medium text-red-400 mb-2">💡 Manifestation:</p>
+                            <p class="text-gray-300">He applied knowing failure was possible and accepted it. Risk-taking was demonstrated by taking action despite the high probability of rejection.</p>
+                        </div>
                     </div>
+                    <!-- Event 4 -->
                     <div class="bg-slate-700/50 rounded-lg p-6 border-l-4 border-red-400">
                         <h4 class="font-semibold text-red-300 mb-2">Event 4: Becoming a Counselor by Standing in Line</h4>
                         <p class="text-gray-300 mb-4">He realized it was the wrong line but signed up for counseling anyway.</p>
-                        <div class="bg-slate-700 rounded p-4 text-gray-200"><p class="text-sm font-medium text-red-400 mb-2">💡 Manifestation:</p><p class="text-gray-300">He acted without fear of making a different choice than planned, taking a risk on an unexpected path that ultimately led to his career in counseling.</p></div>
+                        <div class="bg-slate-700 rounded p-4 text-gray-200">
+                            <p class="text-sm font-medium text-red-400 mb-2">💡 Manifestation:</p>
+                            <p class="text-gray-300">He acted without fear of making a different choice than planned, taking a risk on an unexpected path that ultimately led to his career in counseling.</p>
+                        </div>
                     </div>
                 </div>
             </section>
         </div>
+
+        <!-- CTA Section -->
         <div class="mt-16 bg-gradient-to-r from-cyan-600 to-cyan-500 rounded-xl p-8 text-center">
-            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-4">Ready to Explore Your Path?</h3>
-            <p class="text-cyan-100 mb-6 max-w-2xl mx-auto">Discover how these 5 skills manifest in your own life story and uncover planned happenstance opportunities.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/my-story.html" class="inline-flex items-center justify-center px-6 py-3 bg-white text-cyan-600 font-semibold rounded-lg hover:bg-cyan-50 transition">Analyze My Story with AI<svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
-                <a href="/my-story.html" class="inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-cyan-700 transition">Create My Story<svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></a>
-            </div>
+            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-4">Analyze My Chance Events with AI</h3>
+            <a href="/my-story.html" class="inline-flex items-center justify-center px-8 py-4 bg-white text-cyan-600 font-semibold rounded-lg hover:bg-cyan-50 transition text-lg">
+                Create My Story →
+            </a>
         </div>
+
+        <!-- Sources Section -->
         <footer class="mt-16 pt-8 border-t border-slate-700">
             <div class="text-center">
                 <h4 class="text-gray-400 font-semibold mb-4">Sources</h4>
                 <ul class="text-gray-500 text-sm space-y-2 max-w-2xl mx-auto">
-                    <li><a href="https://en.wikipedia.org/wiki/John_D._Krumboltz" class="text-cyan-400 hover:text-cyan-300 transition">Wikipedia - John D. Krumboltz</a></li>
-                    <li><span>"You're Hired!" TV Show Episode #20, Steve Piazzale interview (2009)</span></li>
+                    <li>
+                        <a href="https://en.wikipedia.org/wiki/John_D._Krumboltz" class="text-cyan-400 hover:text-cyan-300 transition">Wikipedia - John D. Krumboltz</a>
+                    </li>
+                    <li>
+                        <span>"You're Hired!" TV Show Episode #20, Steve Piazzale interview (2009)</span>
+                    </li>
                 </ul>
             </div>
-            <p class="text-center text-gray-600 text-xs mt-8">Planned Happenstance: 5 Skill Analysis | Analyzing career development through Krumboltz's life events</p>
+            <p class="text-center text-gray-600 text-xs mt-8">
+                Planned Happenstance: 5 Skill Analysis | Analyzing career development through Krumboltz's life events
+            </p>
         </footer>
     </main>
 </body>
