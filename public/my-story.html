@@ -4,241 +4,521 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create My Story - Planned Happenstance</title>
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- React 18 -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel Standalone -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- marked.js for markdown -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
-    <!-- html2canvas -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
     <style>
-        * { font-family: 'Inter', sans-serif; }
-        .markdown-content h1 { @apply text-2xl font-bold text-cyan-400 mt-4 mb-2; }
-        .markdown-content h2 { @apply text-xl font-bold text-cyan-400 mt-3 mb-2; }
-        .markdown-content h3 { @apply text-lg font-semibold text-cyan-300 mt-2 mb-1; }
-        .markdown-content h4 { @apply text-base font-semibold text-cyan-300 mt-2 mb-1; }
-        .markdown-content p { @apply text-slate-300 mb-2 leading-relaxed; }
-        .markdown-content ul, .markdown-content ol { @apply text-slate-300 mb-2 ml-4; }
-        .markdown-content li { @apply mb-1; }
-        .markdown-content strong { @apply text-cyan-300 font-semibold; }
-        .markdown-content em { @apply text-cyan-200; }
-        .markdown-content code { @apply bg-slate-700 text-cyan-300 px-2 py-1 rounded text-sm; }
-        .markdown-content pre { @apply bg-slate-800 p-3 rounded mb-2 overflow-x-auto; }
-        .markdown-content hr { @apply border-slate-700 my-4; }
-        .spinner { border: 4px solid rgba(241, 245, 249, 0.1); border-top: 4px solid rgb(34, 211, 238); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+        .app-container { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+        .app-container-wide { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .main-title { font-size: 32px; font-weight: 700; color: #06b6d4; margin-bottom: 12px; }
+        .subtitle { font-size: 16px; color: #94a3b8; }
+        .lang-switch {
+            position: fixed; top: 16px; right: 24px; z-index: 50;
+            font-size: 14px; color: #06b6d4; text-decoration: none;
+        }
+        .lang-switch:hover { color: #22d3ee; }
+        .intro-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+        .intro-text {
+            color: #e2e8f0; font-size: 16px; line-height: 1.7; margin-bottom: 24px;
+        }
+        .btn-start {
+            width: 100%;
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white; padding: 16px 32px; border-radius: 12px;
+            font-size: 16px; font-weight: 600; border: none; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-start:hover { transform: translateY(-2px); }
+        .btn-start:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .progress-bar {
+            background: rgba(30, 41, 59, 0.6); border-radius: 12px;
+            padding: 20px; margin-bottom: 30px;
+        }
+        .progress-text { font-size: 14px; color: #94a3b8; margin-bottom: 12px; text-align: center; }
+        .progress-track { background: rgba(71, 85, 105, 0.5); height: 8px; border-radius: 4px; }
+        .progress-fill {
+            background: linear-gradient(90deg, #06b6d4 0%, #0891b2 100%);
+            height: 100%; transition: width 0.3s ease;
+        }
+        .event-form {
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 16px; padding: 32px; margin-bottom: 30px;
+        }
+        .form-group { margin-bottom: 24px; }
+        .form-label { display: block; font-size: 14px; font-weight: 600; color: #06b6d4; margin-bottom: 8px; }
+        .form-input, .form-textarea {
+            width: 100%; background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(71, 85, 105, 0.5); border-radius: 8px;
+            padding: 12px 16px; font-size: 15px; color: #e2e8f0; font-family: inherit;
+        }
+        .form-input:focus, .form-textarea:focus {
+            outline: none; border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+        .form-textarea { resize: vertical; min-height: 100px; }
+        .button-group { display: flex; gap: 12px; margin-top: 30px; }
+        .btn {
+            flex: 1; padding: 14px 24px; border-radius: 10px;
+            font-size: 15px; font-weight: 600; border: none; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(6, 182, 212, 0.3); color: #06b6d4;
+        }
+        .btn-secondary:hover { background: rgba(30, 41, 59, 0.8); }
+        .analyzing-screen { text-align: center; padding: 60px 20px; }
+        .spinner {
+            width: 60px; height: 60px;
+            border: 4px solid rgba(6, 182, 212, 0.2);
+            border-top: 4px solid #06b6d4; border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto 24px;
+        }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .progress-bar { height: 4px; background-color: rgb(15, 23, 42); border-radius: 2px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, rgb(34, 211, 238), rgb(0, 188, 212)); transition: width 0.3s ease; }
+        .analyzing-text { font-size: 18px; color: #e2e8f0; }
+        .result-container {
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 16px; padding: 32px;
+        }
+        .result-title {
+            font-size: 24px; font-weight: 700; color: #06b6d4;
+            margin-bottom: 30px; text-align: center;
+        }
+        .markdown-content { color: #e2e8f0; font-size: 15px; line-height: 1.8; }
+        .markdown-content h2 {
+            font-size: 20px; font-weight: 700; color: #06b6d4;
+            margin: 32px 0 16px 0; padding-bottom: 8px;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+        }
+        .markdown-content h2:first-child { margin-top: 0; }
+        .markdown-content h3 { font-size: 16px; font-weight: 600; color: #94a3b8; margin: 20px 0 12px 0; }
+        .markdown-content p { margin-bottom: 12px; }
+        .markdown-content strong { color: #fbbf24; font-weight: 600; }
+        .markdown-content ul { margin: 12px 0; padding-left: 20px; }
+        .markdown-content li { margin-bottom: 8px; color: #cbd5e1; }
+        .markdown-content hr { border: none; border-top: 1px solid rgba(71, 85, 105, 0.5); margin: 24px 0; }
+        .markdown-content code { background: rgba(6, 182, 212, 0.1); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+        .markdown-content table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; display: block; overflow-x: auto; white-space: nowrap; }
+        .markdown-content th, .markdown-content td { border: 1px solid rgba(71, 85, 105, 0.5); padding: 8px 12px; text-align: left; }
+        .markdown-content th { background: rgba(6, 182, 212, 0.2); color: #06b6d4; font-weight: 600; }
+        .markdown-content td { background: rgba(15, 23, 42, 0.4); }
+        .journey-timeline { position: relative; padding: 40px 0; }
+        .journey-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; position: relative; }
+        .journey-point { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
+        .journey-number {
+            width: 40px; height: 40px; border-radius: 50%;
+            border: 4px solid rgba(15, 23, 42, 0.9);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: 700; color: white;
+            position: relative; z-index: 2;
+        }
+        .journey-card {
+            background: rgba(15, 23, 42, 0.6); border-radius: 16px;
+            padding: 24px; min-height: 240px; transition: all 0.3s ease; cursor: pointer;
+        }
+        .journey-card:hover { transform: translateY(-8px); }
+        .journey-period { font-size: 12px; color: #94a3b8; margin-bottom: 12px; font-weight: 600; }
+        .journey-title { font-size: 16px; font-weight: 600; color: #e2e8f0; margin-bottom: 16px; line-height: 1.5; }
+        .journey-section { margin-bottom: 12px; }
+        .journey-label { font-size: 12px; color: #06b6d4; font-weight: 600; margin-bottom: 4px; }
+        .journey-text { font-size: 13px; color: #cbd5e1; line-height: 1.6; }
+        @media (max-width: 768px) {
+            .journey-grid { grid-template-columns: 1fr; gap: 30px; }
+            .journey-card { min-height: auto; }
+            .app-container-wide { max-width: 100%; padding: 20px 16px; }
+            .main-title { font-size: 24px; }
+            .subtitle { font-size: 14px; }
+            .markdown-content table { font-size: 11px; }
+            .markdown-content th, .markdown-content td { padding: 6px 8px; }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .journey-grid { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100">
+<body>
     <div id="root"></div>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script type="text/babel">
-        const { useState, useEffect } = React;
-        
-        function App() {
+        const { useState } = React;
+
+        function MyStoryApp() {
             const [stage, setStage] = useState('intro');
+            const [currentEvent, setCurrentEvent] = useState(1);
             const [userName, setUserName] = useState('');
-            const [currentEvent, setCurrentEvent] = useState(0);
-            const [events, setEvents] = useState(Array(4).fill(null).map(() => ({
-                period: '',
-                title: '',
-                situation: '',
-                action: ''
-            })));
+            const [events, setEvents] = useState([
+                { period: '', title: '', situation: '', action: '' },
+                { period: '', title: '', situation: '', action: '' },
+                { period: '', title: '', situation: '', action: '' },
+                { period: '', title: '', situation: '', action: '' }
+            ]);
             const [analysis, setAnalysis] = useState('');
-            const [isLoading, setIsLoading] = useState(false);
-            const [error, setError] = useState('');
-            
-            const handleNameSubmit = () => {
-                if (userName.trim()) { setStage('input'); }
+            const [journeySkills, setJourneySkills] = useState([]);
+
+            const resetApp = () => {
+                setStage('intro');
+                setCurrentEvent(1);
+                setUserName('');
+                setEvents([
+                    { period: '', title: '', situation: '', action: '' },
+                    { period: '', title: '', situation: '', action: '' },
+                    { period: '', title: '', situation: '', action: '' },
+                    { period: '', title: '', situation: '', action: '' }
+                ]);
+                setAnalysis('');
+                setJourneySkills([]);
             };
-            
-            const handleEventChange = (field, value) => {
+
+            const downloadJourneyMap = async () => {
+                const journeyElement = document.getElementById('journey-map-container');
+                if (!journeyElement) { alert('Journey map not found.'); return; }
+                if (typeof html2canvas === 'undefined') { alert('Image library not loaded. Please refresh.'); return; }
+                try {
+                    const canvas = await html2canvas(journeyElement, {
+                        backgroundColor: '#0f172a', scale: 2, logging: false, useCORS: true, allowTaint: true
+                    });
+                    canvas.toBlob((blob) => {
+                        if (!blob) { alert('Failed to generate image.'); return; }
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.download = `${userName || 'my'}_planned_happenstance_journey.png`;
+                        link.href = url;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+                    }, 'image/png');
+                } catch (error) {
+                    console.error('Download error:', error);
+                    alert('Download failed: ' + error.message);
+                }
+            };
+
+            const updateEvent = (field, value) => {
                 const newEvents = [...events];
-                newEvents[currentEvent][field] = value;
+                newEvents[currentEvent - 1][field] = value;
                 setEvents(newEvents);
             };
-            
-            const isEventComplete = () => {
-                const event = events[currentEvent];
-                return event.period && event.title && event.situation && event.action;
-            };
-            
+
             const handleNext = () => {
-                if (!isEventComplete()) { setError('Please fill in all fields'); return; }
-                if (currentEvent < 3) { setCurrentEvent(currentEvent + 1); setError(''); }
-                else { handleAnalyze(); }
+                const current = events[currentEvent - 1];
+                if (!current.period.trim() || !current.title.trim() || !current.situation.trim() || !current.action.trim()) {
+                    alert('Please fill in all fields.');
+                    return;
+                }
+                if (currentEvent < 4) {
+                    setCurrentEvent(currentEvent + 1);
+                } else {
+                    analyzeEvents();
+                }
             };
-            
+
             const handlePrevious = () => {
-                if (currentEvent > 0) { setCurrentEvent(currentEvent - 1); setError(''); }
+                if (currentEvent > 1) setCurrentEvent(currentEvent - 1);
             };
-            
-            const handleAnalyze = async () => {
-                if (!isEventComplete()) { setError('Please fill in all fields'); return; }
-                setStage('analyzing'); setIsLoading(true); setError('');
+
+            const analyzeEvents = async () => {
+                setStage('analyzing');
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 60000);
+
                 try {
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 60000);
                     const response = await fetch('/api/analyze', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ events: events, requestStructuredData: true }),
+                        body: JSON.stringify({ events, requestStructuredData: true }),
                         signal: controller.signal
                     });
                     clearTimeout(timeoutId);
-                    if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Server error:', response.status, errorText);
+                        throw new Error(`Server error (${response.status}): ${errorText.substring(0, 100)}`);
+                    }
+
                     const data = await response.json();
-                    setAnalysis(data.analysis || data.message || '');
+                    if (data.error) throw new Error(data.error);
+
+                    if (!data.content || !data.content[0] || !data.content[0].text) {
+                        console.error('Unexpected API response:', data);
+                        throw new Error('Invalid API response format.');
+                    }
+
+                    const responseText = data.content[0].text;
+                    console.log('API Response:', responseText);
+
+                    let displayText = responseText;
+                    try {
+                        let jsonMatch = responseText.match(/\{"events"\s*:\s*\[[\s\S]*?\]\}/);
+                        if (!jsonMatch) {
+                            jsonMatch = responseText.match(/```json\s*([\s\S]*?)```/);
+                            if (jsonMatch) jsonMatch[0] = jsonMatch[1];
+                        }
+                        if (!jsonMatch) {
+                            jsonMatch = responseText.match(/\{[\s\S]*"events"[\s\S]*\}/);
+                        }
+                        if (jsonMatch) {
+                            console.log('JSON found:', jsonMatch[0]);
+                            const structuredData = JSON.parse(jsonMatch[0]);
+                            setJourneySkills(structuredData.events || []);
+                            displayText = responseText
+                                .replace(/#{1,3}\s*.*?JSON.*?\n/gi, '')
+                                .replace(/```json[\s\S]*?```/gi, '')
+                                .replace(/```[\s\S]*?```/gi, '')
+                                .replace(jsonMatch[0], '')
+                                .replace(/\n{3,}/g, '\n\n')
+                                .trim();
+                        } else {
+                            console.log('JSON not found, extracting from text');
+                            const extractedSkills = extractSkillsFromText(responseText);
+                            setJourneySkills(extractedSkills);
+                        }
+                    } catch (parseError) {
+                        console.error('JSON parse error:', parseError);
+                        const extractedSkills = extractSkillsFromText(responseText);
+                        setJourneySkills(extractedSkills);
+                    }
+
+                    setAnalysis(displayText);
                     setStage('result');
-                } catch (err) {
-                    setError(err.message || 'Failed to analyze. Please try again.');
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        alert('Analysis timed out. Please try again.');
+                    } else {
+                        alert('Analysis failed: ' + error.message);
+                    }
                     setStage('input');
                 }
-                setIsLoading(false);
             };
-            
-            const handleDownloadImage = async () => {
-                const element = document.getElementById('journey-map-content');
-                if (element) {
-                    try {
-                        const canvas = await html2canvas(element, { backgroundColor: '#0f172a', scale: 2 });
-                        const link = document.createElement('a');
-                        link.href = canvas.toDataURL('image/png');
-                        link.download = `${userName}-planned-happenstance-journey.png`;
-                        link.click();
-                    } catch (err) { setError('Failed to download image'); }
-                }
+
+            const extractSkillsFromText = (text) => {
+                const skillKeywords = ['Curiosity', 'Persistence', 'Flexibility', 'Optimism', 'Risk-taking'];
+                const extracted = [];
+                const eventSections = text.split(/##\s*Event\s*\d|Event\s*\d\s*:/i);
+                console.log('Event sections found:', eventSections.length - 1);
+
+                eventSections.forEach((section, index) => {
+                    if (index === 0) return;
+                    const foundSkills = [];
+                    skillKeywords.forEach(skill => {
+                        if (section.toLowerCase().includes(skill.toLowerCase())) {
+                            foundSkills.push(skill);
+                        }
+                    });
+                    console.log(`Event ${index} skills:`, foundSkills);
+                    extracted.push({ skills: foundSkills });
+                });
+
+                while (extracted.length < 4) extracted.push({ skills: [] });
+                return extracted.slice(0, 4);
             };
-            
-            const handleStartOver = () => {
-                setStage('intro'); setUserName(''); setCurrentEvent(0);
-                setEvents(Array(4).fill(null).map(() => ({ period: '', title: '', situation: '', action: '' })));
-                setAnalysis(''); setError('');
+
+            const currentEventData = events[currentEvent - 1];
+            const progress = (currentEvent / 4) * 100;
+            const eventColors = ['#06b6d4', '#0891b2', '#0e7490', '#155e75'];
+
+            const renderMarkdown = (text) => {
+                if (!text) return '';
+                try { return { __html: marked.parse(text) }; }
+                catch (e) { return { __html: text }; }
             };
-            
-            return (
-                <div class="min-h-screen bg-slate-900 text-slate-100">
-                    <div class="bg-slate-800 border-b border-slate-700 px-6 py-4">
-                        <div class="max-w-6xl mx-auto flex justify-between items-center">
-                            <h1 class="text-xl font-bold text-cyan-400">Planned Happenstance</h1>
-                            <a href="https://planned-happenstance.vercel.app/my_story_ai.html" class="text-sm text-cyan-400 hover:text-cyan-300 transition">
-                                한국어 / English ↗
-                            </a>
+
+            if (stage === 'intro') {
+                return (
+                    <div className="app-container">
+                        <a href="https://planned-happenstance.vercel.app/my_story_ai.html" className="lang-switch">
+                            한국어 / English
+                        </a>
+                        <div className="header">
+                            <h1 className="main-title">Create My Story</h1>
+                            <p className="subtitle">My Planned Happenstance Journey</p>
+                        </div>
+                        <div className="intro-box">
+                            <p className="intro-text">
+                                Think of moments in your life where <strong style={{color: '#06b6d4'}}>chance events</strong> influenced your career.
+                            </p>
+                            <p className="intro-text">
+                                Enter 4 key events, and AI will automatically analyze which skills (Curiosity, Persistence, Flexibility, Optimism, Risk-taking) were manifested.
+                            </p>
+                            <div style={{marginTop: '24px'}}>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="Enter your name or nickname"
+                                    value={userName}
+                                    onChange={(e) => setUserName(e.target.value)}
+                                    style={{marginBottom: '16px'}}
+                                />
+                            </div>
+                            <button
+                                className="btn-start"
+                                onClick={() => setStage('input')}
+                                disabled={!userName.trim()}
+                            >
+                                Start →
+                            </button>
                         </div>
                     </div>
-                    
-                    <div class="max-w-4xl mx-auto p-6">
-                        {stage === 'intro' && (
-                            <div class="text-center py-12">
-                                <h1 class="text-4xl font-bold text-cyan-400 mb-2">Create My Story</h1>
-                                <p class="text-xl text-cyan-500 mb-8">My Planned Happenstance Journey</p>
-                                <div class="bg-slate-800 rounded-lg p-8 mb-8 text-left">
-                                    <p class="text-slate-300 leading-relaxed mb-6">Think of moments in your life where chance events influenced your career. Enter 4 key events, and AI will automatically analyze which skills (Curiosity, Persistence, Flexibility, Optimism, Risk-taking) were manifested.</p>
-                                </div>
-                                <div class="bg-slate-800 rounded-lg p-6 max-w-sm mx-auto">
-                                    <input type="text" placeholder="Enter your name or nickname" value={userName} onChange={(e) => setUserName(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && userName.trim() && handleNameSubmit()} class="w-full bg-slate-700 border border-slate-600 rounded px-4 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400 mb-4" />
-                                    <button onClick={handleNameSubmit} disabled={!userName.trim()} class="w-full bg-cyan-500 hover:bg-cyan-400 disabled:bg-slate-600 disabled:cursor-not-allowed text-slate-900 font-semibold py-2 px-4 rounded transition">Start →</button>
-                                </div>
+                );
+            }
+
+            if (stage === 'input') {
+                return (
+                    <div className="app-container">
+                        <div className="header">
+                            <h1 className="main-title">Event {currentEvent}/4</h1>
+                        </div>
+                        <div className="progress-bar">
+                            <p className="progress-text">Progress: {Math.round(progress)}%</p>
+                            <div className="progress-track">
+                                <div className="progress-fill" style={{width: `${progress}%`}}></div>
                             </div>
-                        )}
-                        {stage === 'input' && (
-                            <div class="py-8">
-                                <div class="mb-8">
-                                    <h2 class="text-2xl font-bold text-cyan-400 mb-4">Event {currentEvent + 1}/4</h2>
-                                    <div class="progress-bar"><div class="progress-fill" style={{width: `${((currentEvent + 1) / 4) * 100}%`}}></div></div>
-                                </div>
-                                <div class="bg-slate-800 rounded-lg p-8 space-y-6">
-                                    <div>
-                                        <label class="block text-sm font-semibold text-cyan-400 mb-2">Period</label>
-                                        <input type="text" placeholder="e.g., College sophomore, Summer 2015" value={events[currentEvent].period} onChange={(e) => handleEventChange('period', e.target.value)} class="w-full bg-slate-700 border border-slate-600 rounded px-4 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-cyan-400 mb-2">Event Title</label>
-                                        <input type="text" placeholder="e.g., Accidentally joined a startup club" value={events[currentEvent].title} onChange={(e) => handleEventChange('title', e.target.value)} class="w-full bg-slate-700 border border-slate-600 rounded px-4 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400" />
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-cyan-400 mb-2">Chance Event</label>
-                                        <textarea placeholder="What chance event happened?" value={events[currentEvent].situation} onChange={(e) => handleEventChange('situation', e.target.value)} rows="4" class="w-full bg-slate-700 border border-slate-600 rounded px-4 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400 resize-none"></textarea>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-cyan-400 mb-2">My Action</label>
-                                        <textarea placeholder="How did you respond to the situation?" value={events[currentEvent].action} onChange={(e) => handleEventChange('action', e.target.value)} rows="4" class="w-full bg-slate-700 border border-slate-600 rounded px-4 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400 resize-none"></textarea>
-                                    </div>
-                                    {error && (<div class="bg-red-900 border border-red-700 text-red-200 px-4 py-2 rounded">{error}</div>)}
-                                </div>
-                                <div class="flex justify-between mt-8">
-                                    <button onClick={handlePrevious} disabled={currentEvent === 0} class="bg-slate-700 hover:bg-slate-600 disabled:bg-slate-800 disabled:cursor-not-allowed text-slate-100 font-semibold py-2 px-6 rounded transition">← Previous</button>
-                                    <button onClick={handleNext} class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-semibold py-2 px-6 rounded transition">{currentEvent === 3 ? 'Start AI Analysis' : 'Next →'}</button>
-                                </div>
+                        </div>
+                        <div className="event-form">
+                            <div className="form-group">
+                                <label className="form-label">Period</label>
+                                <input type="text" className="form-input" placeholder="e.g., College sophomore, Summer 2015"
+                                    value={currentEventData.period} onChange={(e) => updateEvent('period', e.target.value)} />
                             </div>
-                        )}
-                        {stage === 'analyzing' && (
-                            <div class="flex flex-col items-center justify-center py-20">
-                                <div class="spinner mb-6"></div>
-                                <p class="text-lg text-slate-300">AI is analyzing...</p>
+                            <div className="form-group">
+                                <label className="form-label">Event Title</label>
+                                <input type="text" className="form-input" placeholder="e.g., Accidentally joined a startup club"
+                                    value={currentEventData.title} onChange={(e) => updateEvent('title', e.target.value)} />
                             </div>
-                        )}
-                        {stage === 'result' && (
-                            <div class="py-8">
-                                <h2 class="text-3xl font-bold text-cyan-400 mb-2">{userName}'s AI Analysis Results</h2>
-                                <p class="text-slate-400 mb-8">Based on Planned Happenstance Theory</p>
-                                <div class="bg-slate-800 rounded-lg p-8 mb-8 markdown-content">
-                                    <div dangerouslySetInnerHTML={{ __html: marked.parse(analysis) }}></div>
-                                </div>
-                                <div class="flex gap-4 flex-wrap">
-                                    <button onClick={() => setStage('journey_map')} class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-semibold py-2 px-6 rounded transition">View Journey Map 🗺️</button>
-                                    <button onClick={handleStartOver} class="bg-slate-700 hover:bg-slate-600 text-slate-100 font-semibold py-2 px-6 rounded transition">Start Over</button>
-                                </div>
+                            <div className="form-group">
+                                <label className="form-label">Chance Event</label>
+                                <textarea className="form-textarea" placeholder="What chance event happened?"
+                                    value={currentEventData.situation} onChange={(e) => updateEvent('situation', e.target.value)} />
                             </div>
-                        )}
-                        {stage === 'journey_map' && (
-                            <div class="py-8">
-                                <h2 class="text-3xl font-bold text-cyan-400 mb-8">{userName}'s Journey Timeline</h2>
-                                <div id="journey-map-content" class="bg-slate-800 rounded-lg p-8 mb-8">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        {events.map((event, idx) => (
-                                            <div key={idx} class="bg-slate-700 rounded-lg p-6 border border-slate-600">
-                                                <div class="text-sm text-cyan-400 font-semibold mb-2">Event {idx + 1}</div>
-                                                <h3 class="text-lg font-bold text-cyan-300 mb-4">{event.title}</h3>
-                                                <div class="space-y-3">
-                                                    <div class="text-sm text-slate-300"><span class="text-cyan-400 font-semibold">📅 Period:</span> {event.period}</div>
-                                                    <div class="text-sm text-slate-300"><span class="text-cyan-400 font-semibold">⚡ Chance Event:</span><p class="mt-1">{event.situation}</p></div>
-                                                    <div class="text-sm text-slate-300"><span class="text-cyan-400 font-semibold">🎬 My Action:</span><p class="mt-1">{event.action}</p></div>
+                            <div className="form-group">
+                                <label className="form-label">My Action</label>
+                                <textarea className="form-textarea" placeholder="How did you respond to the situation?"
+                                    value={currentEventData.action} onChange={(e) => updateEvent('action', e.target.value)} />
+                            </div>
+                            <div className="button-group">
+                                {currentEvent > 1 && (
+                                    <button className="btn btn-secondary" onClick={handlePrevious}>← Previous</button>
+                                )}
+                                <button className="btn btn-primary" onClick={handleNext}>
+                                    {currentEvent < 4 ? 'Next →' : 'Start AI Analysis'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (stage === 'analyzing') {
+                return (
+                    <div className="app-container">
+                        <div className="analyzing-screen">
+                            <div className="spinner"></div>
+                            <p className="analyzing-text">AI is analyzing...</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (stage === 'result') {
+                return (
+                    <div className="app-container">
+                        <div className="result-container">
+                            <h2 className="result-title">{userName}'s AI Analysis Results</h2>
+                            <div className="markdown-content" dangerouslySetInnerHTML={renderMarkdown(analysis)} />
+                            <div className="button-group" style={{marginTop: '30px'}}>
+                                <button className="btn btn-primary" onClick={() => setStage('journey_map')}>
+                                    View Journey Map
+                                </button>
+                                <button className="btn btn-secondary" onClick={resetApp}>
+                                    Start Over
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (stage === 'journey_map') {
+                return (
+                    <div className="app-container-wide">
+                        <div id="journey-map-container">
+                            <div className="header">
+                                <h1 className="main-title">{userName}'s Planned Happenstance Journey</h1>
+                                <p className="subtitle">A Career Story Shaped by Chance Events</p>
+                            </div>
+                            <div className="journey-timeline">
+                                <div className="journey-grid">
+                                    {events.map((event, index) => {
+                                        const color = eventColors[index];
+                                        return (
+                                            <div key={index}>
+                                                <div className="journey-point">
+                                                    <div className="journey-number" style={{
+                                                        background: color,
+                                                        boxShadow: `0 0 20px ${color}40`
+                                                    }}>
+                                                        {index + 1}
+                                                    </div>
+                                                </div>
+                                                <div className="journey-card" style={{ border: `2px solid ${color}40` }}>
+                                                    <div className="journey-period">{event.period}</div>
+                                                    <h3 className="journey-title">{event.title}</h3>
+                                                    <div className="journey-section">
+                                                        <div className="journey-label">Chance Event</div>
+                                                        <div className="journey-text">{event.situation}</div>
+                                                    </div>
+                                                    <div className="journey-section">
+                                                        <div className="journey-label">My Action</div>
+                                                        <div className="journey-text">{event.action}</div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div class="flex gap-4 flex-wrap">
-                                    <button onClick={handleDownloadImage} class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-semibold py-2 px-6 rounded transition">📥 Download Image</button>
-                                    <button onClick={() => setStage('result')} class="bg-slate-700 hover:bg-slate-600 text-slate-100 font-semibold py-2 px-6 rounded transition">← Analysis Results</button>
-                                    <button onClick={handleStartOver} class="bg-slate-700 hover:bg-slate-600 text-slate-100 font-semibold py-2 px-6 rounded transition">Start Over</button>
+                                        );
+                                    })}
                                 </div>
                             </div>
-                        )}
+                        </div>
+                        <div style={{textAlign: 'center', marginTop: '60px'}}>
+                            <div className="button-group" style={{maxWidth: '600px', margin: '0 auto'}}>
+                                <button className="btn btn-primary" onClick={downloadJourneyMap}>
+                                    Download Image
+                                </button>
+                                <button className="btn btn-secondary" onClick={() => setStage('result')}>
+                                    ← Analysis Results
+                                </button>
+                                <button className="btn btn-secondary" onClick={resetApp}>
+                                    Start Over
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            );
+                );
+            }
         }
-        
+
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        root.render(<MyStoryApp />);
     </script>
 </body>
 </html>
